@@ -7,7 +7,7 @@ router_commands = Router()
 
 @router_commands.message(Command('start'))
 async def start_handler(message: Message):
-    await message.answer(text='Привет')
+    await message.answer(text=f'Привет, твой id {message.from_user.id}')
 
 @router_commands.message(Command('help'))
 async def help_handler(message: Message):

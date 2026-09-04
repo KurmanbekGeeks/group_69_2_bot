@@ -1,0 +1,1 @@
+print('adsd;lfsdsd dsfsdfsdf sdfdsfsdfsd sdfsdf \n привет')

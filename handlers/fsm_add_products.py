@@ -37,6 +37,7 @@ async def add_price(message: Message, state: FSMContext):
 async def add_description(message: Message, state: FSMContext):
     data = await state.update_data(description=message.text)
 
-    await message.answer(f"Данные товара: Название - {data['name']} Цена - {data['price']} Описание - {data['description']}")
+    await message.answer(f"Данные товара: \nНазвание - {data['name']} \nЦена - {data['price']} \nОписание - {data['description']}")
     
     await state.clear()
+
