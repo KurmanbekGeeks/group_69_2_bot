@@ -3,7 +3,7 @@ import logging
 from config import bot, dp, Admin
 from handlers import commands, echo, fsm_add_products
 from aiogram.types import BotCommand
-
+from database import db
 
 
 async def set_commands():
@@ -29,5 +29,6 @@ dp.include_router(router=echo.router_echo)
 dp.startup.register(on_startup)
 
 if __name__ == "__main__":
+    db.init_db()
     logging.basicConfig(level=logging.INFO)
     asyncio.run(dp.start_polling(bot))

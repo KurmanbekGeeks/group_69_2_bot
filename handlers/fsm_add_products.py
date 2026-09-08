@@ -4,6 +4,8 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
+from database.db import add_product_db
+
 class AddProduct(StatesGroup):
     name = State()
     price = State()
@@ -38,6 +40,8 @@ async def add_description(message: Message, state: FSMContext):
     data = await state.update_data(description=message.text)
 
     await message.answer(f"Данные товара: \nНазвание - {data['name']} \nЦена - {data['price']} \nОписание - {data['description']}")
+
+    add_product_db(name=data['name'], price=data['price'], description=data['description'])
     
     await state.clear()
 
