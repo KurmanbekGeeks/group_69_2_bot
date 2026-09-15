@@ -10,6 +10,9 @@ class AddProduct(StatesGroup):
     name = State()
     price = State()
     description = State()
+    product_id = State()    #артикул
+    category = State()
+    photo = State()
 
 
 router_addproduct = Router()
@@ -37,11 +40,39 @@ async def add_price(message: Message, state: FSMContext):
 
 @router_addproduct.message(AddProduct.description)
 async def add_description(message: Message, state: FSMContext):
-    data = await state.update_data(description=message.text)
+    await state.update_data(description=message.text)
+    await message.answer('Введите артикул для товара. Он должен быть уникальным!')
+    await state.set_state(AddProduct.product_id)
 
-    await message.answer(f"Данные товара: \nНазвание - {data['name']} \nЦена - {data['price']} \nОписание - {data['description']}")
 
-    add_product_db(name=data['name'], price=data['price'], description=data['description'])
+@router_addproduct.message(AddProduct.product_id)
+async def add_product_id(message: Message, state: FSMContext):
+    await state.update_data(product_id=message.text)
+    await message.answer('Введите категорию')
+    await state.set_state(AddProduct.category)
+
+@router_addproduct.message(AddProduct.category)
+async def add_category(message: Message, state: FSMContext):
+    await state.update_data(category=message.text)
+    await message.answer('Отправьте фото товара')
+    await state.set_state(AddProduct.photo)
+
+@router_addproduct.message(AddProduct.photo)
+async def add_photo(message: Message, state: FSMContext):
+    await state.update_data(photo=message.photo[-1].file_id)
+
+    data = await state.get_data()
+
+    await message.answer_photo(photo=data['photo'], 
+                               caption=f"Данные товара: "
+                                f"\nНазвание - {data['name']}"
+                                f"\nЦена - {data['price']} "
+                                f"\nОписание - {data['description']}" 
+                                f"\nАртикул - {data['product_id']}"
+                                f"\nКатегория - {data['category']}")
+
+    await add_product_db(name=data['name'], price=data['price'], description=data['description'], 
+                         product_id=data['product_id'], category=data['category'], photo=data['photo'])
     
     await state.clear()
 

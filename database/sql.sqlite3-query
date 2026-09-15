@@ -1,0 +1,31 @@
+-- database: ./bot.db
+
+SELECT * FROM products_detail;
+
+SELECT * FROM products;
+
+INSERT INTO products (name, price, product_id, photo) 
+VALUES ('nike', 6700, 1000, 'safdlnLNGD');
+
+
+INSERT INTO products_detail (description, product_id, category) 
+VALUES ('Летние кросс', 1000, 'Обувь');
+
+
+SELECT products.name, products.price, products_detail.description, products_detail.category, products.product_id, products_detail.product_id
+FROM products
+INNER JOIN products_detail on products.product_id = products_detail.product_id;
+
+
+SELECT products.name, products.price, products_detail.description, products_detail.category, products.product_id, products_detail.product_id
+FROM products
+LEFT JOIN products_detail on products.product_id = products_detail.product_id;
+
+SELECT products.name, products.price, products_detail.description, products_detail.category, products.product_id, products_detail.product_id
+FROM products
+RIGHT JOIN products_detail on products.product_id = products_detail.product_id;
+
+
+SELECT products.name, products.price, products_detail.description, products_detail.category, products.product_id, products_detail.product_id
+FROM products
+FULL JOIN products_detail on products.product_id = products_detail.product_id;
