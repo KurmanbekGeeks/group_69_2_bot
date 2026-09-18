@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from config import bot, dp, Admin
-from handlers import commands, echo, fsm_add_products
+from handlers import commands, echo, fsm_add_products, fsm_edit_products
 from aiogram.types import BotCommand
 from database import db
 
@@ -13,6 +13,7 @@ async def set_commands():
         BotCommand(command='mem', description='фотка мема'),
         BotCommand(command='sticker', description='отправка стикеров'),
         BotCommand(command='add_product', description='заполнения нового товара'),
+        BotCommand(command='products', description='просмотр товаров'),
     ]
     await bot.set_my_commands(commands)
 
@@ -24,6 +25,8 @@ async def on_startup():
 
 dp.include_router(router=commands.router_commands)
 dp.include_router(router=fsm_add_products.router_addproduct)
+dp.include_router(router=fsm_edit_products.router_edit)
+
 dp.include_router(router=echo.router_echo)
 
 

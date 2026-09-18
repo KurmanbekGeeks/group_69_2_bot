@@ -2,6 +2,8 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.types import Message, FSInputFile
 from config import bot
+from database import db
+from handlers import buttons
 
 router_commands = Router()
 
@@ -35,3 +37,17 @@ async def sticker_handler(message: Message):
 @router_commands.message(F.sticker)
 async def get_sticker_id_handler(message: Message):
     await message.answer(f'ID - этого стикера - {message.sticker.file_id}')
+
+
+@router_commands.message(Command('products'))
+async def get_products(message: Message):
+    products = await db.get_products_db()
+
+    if not products:
+        await message.answer('В базе данных товаров нет!')
+        return
+    else:
+        for name, price, description, category, product_id, photo in products:
+            await message.answer_photo(photo=photo, 
+                                       caption=f'Название - {name} \nЦена - {price} \nОписание - {description} \nКатегория - {category} \nАртикул - {product_id}', 
+                                       reply_markup=buttons.product_actions(product_id=product_id))

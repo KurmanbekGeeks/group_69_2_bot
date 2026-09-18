@@ -29,3 +29,6 @@ RIGHT JOIN products_detail on products.product_id = products_detail.product_id;
 SELECT products.name, products.price, products_detail.description, products_detail.category, products.product_id, products_detail.product_id
 FROM products
 FULL JOIN products_detail on products.product_id = products_detail.product_id;
+
+
+UPDATE products SET price = 5500 WHERE products.product_id = 1003;
