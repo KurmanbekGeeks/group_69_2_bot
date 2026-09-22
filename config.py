@@ -10,3 +10,5 @@ bot = Bot(token=token_bot)
 dp = Dispatcher()
 
 path_db = 'database/bot.db'
+
+staff_code = "S1001"

@@ -35,3 +35,6 @@ UPDATE products SET price = 5500 WHERE products.product_id = 1003;
 
 
 SELECT * FROM staff WHERE user_id = 995712956;
+
+
+SELECT user_id, full_name FROM staff;

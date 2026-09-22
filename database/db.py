@@ -57,6 +57,13 @@ async def add_staff_db(user_id, full_name):
         await conn.execute(queries.insert_staff, (user_id, full_name))
         await conn.commit()
 
+
+async def get_staff_list_db():
+    async with aiosqlite.connect(path_db) as conn:
+        cursor = await conn.execute(queries.get_staff_list)
+        staff_list = await cursor.fetchall()
+        return staff_list
+
 # =================== sqlite3 ================
 
 # path_db = 'database/sqlite3.db'

@@ -17,13 +17,21 @@ class EditProduct(StatesGroup):
 
 @router_edit.callback_query(F.data.startswith('edit:'))
 async def edit_start(call: CallbackQuery, state: FSMContext):
-    product_id = call.data.split(':')[1]
-    print(product_id)
 
-    await state.update_data(product_id=product_id)
-    await call.message.answer('Что меняем?', reply_markup=buttons.edit_fields)
-    await call.answer()
-    await state.set_state(EditProduct.field)
+
+    staff = await db.get_staff_list_db()
+    staff_ids = [user_id for user_id, full_name in staff]
+
+    if call.from_user.id in staff_ids:
+        product_id = call.data.split(':')[1]
+        print(product_id)
+
+        await state.update_data(product_id=product_id)
+        await call.message.answer('Что меняем?', reply_markup=buttons.edit_fields)
+        await call.answer()
+        await state.set_state(EditProduct.field)
+    else: 
+        await call.message.answer('У вас нет доступов к этой команде!')
 
 
 @router_edit.callback_query(EditProduct.field, F.data.startswith('field_'))

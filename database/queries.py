@@ -48,3 +48,5 @@ create_staff_table = """
 check_staff = 'SELECT 1 FROM staff WHERE user_id = ?'
 
 insert_staff = 'INSERT INTO staff (user_id, full_name) VALUES (?, ?)'
+
+get_staff_list = 'SELECT user_id, full_name FROM staff;'

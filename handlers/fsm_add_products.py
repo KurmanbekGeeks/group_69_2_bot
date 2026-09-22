@@ -4,7 +4,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
-from database.db import add_product_db
+from database import db
 
 class AddProduct(StatesGroup):
     name = State()
@@ -20,8 +20,15 @@ router_addproduct = Router()
 
 @router_addproduct.message(Command('add_product'))
 async def add_start_fsm(message: Message, state: FSMContext):
-    await message.answer('Введите название товара:')
-    await state.set_state(AddProduct.name)
+
+    staff = await db.get_staff_list_db()
+    staff_ids = [user_id for user_id, full_name in staff]
+
+    if message.from_user.id in staff_ids:
+        await message.answer('Введите название товара:')
+        await state.set_state(AddProduct.name)
+    else: 
+         await message.answer('У вас нет доступов к этой команде!')
 
 
 @router_addproduct.message(AddProduct.name)
@@ -71,7 +78,7 @@ async def add_photo(message: Message, state: FSMContext):
                                 f"\nАртикул - {data['product_id']}"
                                 f"\nКатегория - {data['category']}")
 
-    await add_product_db(name=data['name'], price=data['price'], description=data['description'], 
+    await db.add_product_db(name=data['name'], price=data['price'], description=data['description'], 
                          product_id=data['product_id'], category=data['category'], photo=data['photo'])
     
     await state.clear()

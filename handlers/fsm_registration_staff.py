@@ -4,10 +4,10 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 from database import db
+from config import staff_code
 
 router_staff = Router()
 
-staff_code = "S1001"
 
 class RegisterStaff(StatesGroup):
     code = State()
