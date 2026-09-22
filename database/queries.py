@@ -34,3 +34,17 @@ update_product = 'UPDATE {table} SET {field} = ? WHERE products.product_id = ?;'
 delete_product = "DELETE FROM products WHERE product_id = ?"
 delete_product_detail = "DELETE FROM products_detail WHERE product_id = ?"
 
+
+create_staff_table = """
+    CREATE TABLE IF NOT EXISTS staff (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL UNIQUE,
+        full_name TEXT,
+        added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+"""
+
+
+check_staff = 'SELECT 1 FROM staff WHERE user_id = ?'
+
+insert_staff = 'INSERT INTO staff (user_id, full_name) VALUES (?, ?)'

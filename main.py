@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from config import bot, dp, Admin
-from handlers import commands, echo, fsm_add_products, fsm_edit_products
+from handlers import commands, echo, fsm_add_products, fsm_edit_products, fsm_registration_staff
 from aiogram.types import BotCommand
 from database import db
 
@@ -26,6 +26,7 @@ async def on_startup():
 dp.include_router(router=commands.router_commands)
 dp.include_router(router=fsm_add_products.router_addproduct)
 dp.include_router(router=fsm_edit_products.router_edit)
+dp.include_router(router=fsm_registration_staff.router_staff)
 
 dp.include_router(router=echo.router_echo)
 
